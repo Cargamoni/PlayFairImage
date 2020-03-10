@@ -62,8 +62,6 @@ def FindTheSecretImage():
     except IOError:
         print("File not found, please create secret image.")
 
-
-
 # Print iterations progress
 def PrintProgressBar (iteration, total, prefix ='', suffix ='', decimals = 1, length = 100, fill ='█', printEnd ="\r"):
     """

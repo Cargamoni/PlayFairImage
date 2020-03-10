@@ -55,4 +55,4 @@ class Receiving(Thread):
             s.close()
 
 # --- main ---
-Receiving().run()
+#Receiving().run()

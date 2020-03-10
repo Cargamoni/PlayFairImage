@@ -7,6 +7,19 @@ import ImageOperations as ImgOps
 import SecretShareServer as Server
 import SecretShareClient as Client
 
+'''
+1 - Welcome Message 
+2 - Make a SecretKey
+3 - Create a Cipher Image
+4 - Send Cipher Image
+5 - Get Cipher Image
+'''
+
+
+### Welcome Message ###
+
+print('Welcome to the Playfair Image Transferring Program PlayFairImage.')
+
 ### Home Made Variables ###
 Verticality = False
 SquareWidth = 0

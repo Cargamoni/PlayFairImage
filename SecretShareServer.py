@@ -13,12 +13,9 @@ class Streaming(Thread):
     def __init__(self):
         Thread.__init__(self)
     def run(self):
-
         s = socket.socket()
-
         # solution for: "socket.error: [Errno 98] Address already in use"
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
         s.bind(ADDRESS)
         s.listen(1)
 
@@ -26,25 +23,19 @@ class Streaming(Thread):
 
         try:
             sc, info = s.accept()
-            print("Video client connected:", info)
-
+            print("Image Client Connected:", info)
             while True:
                 str = ''
                 # image to string
                 with open("converted/cipher.bmp", "rb") as imageFile:
                     str = base64.b64encode(imageFile.read())
-
                 img_str = str
-
                 print('len:', len(img_str))
-
                 # send string size
                 len_str = struct.pack('!i', len(img_str))
                 sc.send(len_str)
-
                 # send string image
                 sc.send(img_str)
-
         except Exception as e:
             print(e)
         finally:
@@ -54,4 +45,4 @@ class Streaming(Thread):
             s.close()
 
 # --- main ---
-Streaming().run()
+#Streaming().run()
