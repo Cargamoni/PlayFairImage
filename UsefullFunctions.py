@@ -1,9 +1,31 @@
 from PIL import Image
 import random
 import numpy as np
+from os import system, name
 
-### Secret Key File Creation ###
+### Secret Key File Creating ###
 def CreateSecretKeyFile():
+    stack = []
+    for x in range(256):
+        stack.append(x)
+
+    randStack = []
+    while (len(stack) != 0):
+        a = random.choice(stack)
+        randStack.append(a)
+        stack.remove(a)
+
+    secretKey = np.array(randStack)
+    secretKey = np.reshape(randStack, (16, 16))
+    # secretKey = list(chunks(randStack,16))
+    print("Secret Length :", len(secretKey) * len(secretKey[0]))
+    print(secretKey)
+
+    np.savetxt("secretKey", secretKey, fmt="%d")
+    return secretKey
+
+### Secret Key File Loading ###
+def LoadSecretKeyFile():
     try:
         SecretKey = []
         fileReader = [line.rstrip('\n') for line in open("secretKey")]
@@ -13,24 +35,8 @@ def CreateSecretKeyFile():
             SecretKey.append(keys)
         return np.array(SecretKey)
     except IOError:
-        print("File not created, creatig file.")
-        stack = []
-        for x in range(256):
-            stack.append(x)
-
-        randStack = []
-        while (len(stack) != 0):
-            a = random.choice(stack)
-            randStack.append(a)
-            stack.remove(a)
-
-        secretKey = np.array(randStack)
-        secretKey = np.reshape(randStack, (16, 16))
-        #secretKey = list(chunks(randStack,16))
-        print("Secret Length :", len(secretKey) * len(secretKey[0]))
-
-        np.savetxt("secretKey", secretKey, fmt="%d")
-        return secretKey
+        print("File not found, creatig file.")
+        return CreateSecretKeyFile()
 
 
 ### Playfair Secret Image Change
@@ -61,6 +67,15 @@ def FindTheSecretImage():
         return SecretImage
     except IOError:
         print("File not found, please create secret image.")
+
+### Clear Terminal ###
+def ClearScreen():
+        # for windows
+        if name == 'nt':
+            _ = system('cls')
+            # for mac and linux(here, os.name is 'posix')
+        else:
+            _ = system('clear')
 
 # Print iterations progress
 def PrintProgressBar (iteration, total, prefix ='', suffix ='', decimals = 1, length = 100, fill ='█', printEnd ="\r"):

@@ -1,5 +1,6 @@
 from PIL import Image
 import numpy as np
+import time
 
 ### Home Made Functions ###
 import UsefullFunctions as UsFunc
@@ -7,22 +8,67 @@ import ImageOperations as ImgOps
 import SecretShareServer as Server
 import SecretShareClient as Client
 
+### Home Made Variables ###
+Verticality = False
+SquareWidth = 0
+Status = True
+
 '''
-1 - Welcome Message 
-2 - Make a SecretKey
 3 - Create a Cipher Image
 4 - Send Cipher Image
 5 - Get Cipher Image
 '''
 
+while(Status):
+    ### Welcome Message ###
+    print('Welcome to the Playfair Image Transferring Program: PlayFairImage.')
+    print('Please give a input for operations:')
+    print('1 : Make a SecretKey')
+    print('2 : Create a Cipher Image')
+    print('3 : Send Cipher Image')
+    print('4 : Get Cipher Image')
+    print('5 : Clear Screen')
+    print('6 : Quit')
+    UserInput = input('Input : ')
+    if not UserInput.isnumeric() or UserInput == '':
+        print('Please give a valid input !')
+        time.sleep(2)
+        continue
+    else:
+        if UserInput == '1':
+            UsFunc.ClearScreen()
+            print('This operation will create a new SecretKey, if you have already one it will warn you for overwrite operation.')
+            print('SecretKey File is using for cipher and decipher your image. Alice have to send this file to Bob for decipher !')
+            try:
+                fileReader = open("secretKey",'r')
+                if fileReader is not None:
+                    print('Warning you already have secretKey file, this operation will overwrite through your file.')
+                    feedback = input('\nDo you want to continue ? (Y/n : Default No) :> ')
+                    if feedback == '' or feedback == 'n':
+                        UsFunc.ClearScreen()
+                        continue
+                    elif feedback == 'Y':
+                        print('\nCreating a new SecretKeyFile.\n')
+                        UsFunc.CreateSecretKeyFile()
+                        print('\nNew SecretKey File Created !\n')
+                        time.sleep(2)
+                    else:
+                        print('Wrong input !')
+                        time.sleep(2)
+            except IOError:
+                print("\nSecretKey File not found, creatig a new SecretKey File.\n")
+                UsFunc.CreateSecretKeyFile()
+                print("\nNew SecretKey File Created !\n")
+                time.sleep(2)
 
-### Welcome Message ###
+        if UserInput == '5':
+            UsFunc.ClearScreen()
+            continue
+        if UserInput == '6':
+            Status = False
+            print('\nAll operations done, exiting program.')
 
-print('Welcome to the Playfair Image Transferring Program PlayFairImage.')
-
-### Home Made Variables ###
-Verticality = False
-SquareWidth = 0
+'''
 
 ### Resimi Açma###
 PlainImage = UsFunc.FindThePlainImage()
@@ -78,3 +124,5 @@ for i, Secrets in enumerate(SecretPixelColors):
     UsFunc.PrintProgressBar(i + 1, len(SecretPixelColors), prefix='Progress:', suffix='Complete', length=50)
 
 ImgOps.CreateCipherImage(SquareWidth, CipherPixelColors)
+
+'''
