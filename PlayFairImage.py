@@ -14,8 +14,6 @@ SquareWidth = 0
 Status = True
 
 '''
-4 - Send Cipher Image
-5 - Get Cipher Image
 6 - Decipher Image
 '''
 
@@ -93,7 +91,7 @@ while(Status):
 
             CipherPixelColors = []
             SecretKey = UsFunc.LoadSecretKeyFile()
-            print(SecretKey)
+            print(SecretKey,'\n')
 
             UsFunc.PrintProgressBar(0, len(SecretPixelColors), prefix='Progress:', suffix='Complete', length=50)
             for i, Secrets in enumerate(SecretPixelColors):
@@ -121,24 +119,29 @@ while(Status):
                 CipherPixelColors.append((Red[0], Green[0], Blue[0]))
                 CipherPixelColors.append((Red[1], Green[1], Blue[1]))
 
-                print('\n')
                 UsFunc.PrintProgressBar(i + 1, len(SecretPixelColors), prefix='Progress:', suffix='Complete', length=50)
 
             ImgOps.CreateCipherImage(SquareWidth, CipherPixelColors)
-            print('\nCreating Cipher Image Operation Done !\n Heading to Main Menu...\n')
+            print('\nCipher Image Created !\nHeading to Main Menu...\n')
             time.sleep(5)
 
         ### Send Cipher Image ###
         if UserInput == '3':
             UsFunc.ClearScreen()
-            print('3 : Send Cipher Image is not Ready !')
+            if __name__ == '__main__':
+                NewServer = Server
+                NewServer.Streaming.run(Server)
+            print('\nSending Cipher Image is Complete, Closing Operation\n')
             time.sleep(5)
             continue
 
         ### Get Cipher Image ###
         if UserInput == '4':
             UsFunc.ClearScreen()
-            print('4 : Recieve Cipher Image is not Ready !')
+            if __name__ == '__main__':
+                NewClient = Client
+                NewClient.Receiving.run(Client)
+            print('\nRecieving Cipher Image is Complete, Closing Operation\n')
             time.sleep(5)
             continue
 
@@ -146,6 +149,7 @@ while(Status):
         if UserInput == '5':
             UsFunc.ClearScreen()
             continue
+
         ### 6: Quit ###
         if UserInput == '6':
             Status = False

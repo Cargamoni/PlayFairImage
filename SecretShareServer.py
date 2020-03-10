@@ -46,3 +46,6 @@ class Streaming(Thread):
 
 # --- main ---
 #Streaming().run()
+if __name__ == '__main__':
+    Server = Streaming()
+    Server.run()

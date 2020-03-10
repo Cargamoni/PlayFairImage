@@ -56,3 +56,6 @@ class Receiving(Thread):
 
 # --- main ---
 #Receiving().run()
+if __name__ == '__main__':
+    Client = Receiving()
+    Client.run()
