@@ -19,7 +19,6 @@ def CreateSecretKeyFile():
     secretKey = np.reshape(randStack, (16, 16))
     # secretKey = list(chunks(randStack,16))
     print("Secret Length :", len(secretKey) * len(secretKey[0]))
-    print(secretKey)
 
     np.savetxt("secretKey", secretKey, fmt="%d")
     return secretKey
