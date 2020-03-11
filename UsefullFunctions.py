@@ -66,7 +66,7 @@ def FindTheCipherImage():
         print("File not found, please get the Cipher Image.")
 
 ### Hide Original Image Size ###
-def HideOriginalImageSize(width,height):
+def HideOriginalImageSize(width,height,verticallity):
     widthStr = len(str(width))
     heightStr = len(str(height))
     width = list(str(width))
@@ -89,9 +89,8 @@ def HideOriginalImageSize(width,height):
 
     print(width,height)
 
-    Red = []
-    Green = []
-    Blue = [0,0,0]
+    PixelUno = []
+    PixelDuo = []
 
     for i in range(3):
         red = 0
@@ -102,19 +101,29 @@ def HideOriginalImageSize(width,height):
 
         green += int(height[i][0])*10
         green += int(height[i][1])
-        Red.append(red)
-        Green.append(green)
 
-    return (list(Red),list(Green),list(Blue))
+        PixelUno.append(red)
+        PixelDuo.append(green)
+
+    if verticallity:
+        PixelUno[0] = 255
+        PixelDuo[0] = 255
+
+    return(list(PixelUno),list(PixelDuo))
 
 ### Get Hidden Size ###
 def GetHiddenSize(image):
+    ''' Burası Daha Sonra Dikey Resimler İçin düzenlenecek
+    cipherSize = image.getdata()
+    cipherSize = cipherSize.size[0]
+    print(pixels[0, cipherSize-1])
+    '''
     pixels = image.load()
     width = list(pixels[0, 0])
     heigth = list(pixels[0, 1])
     width = int(str(width[0]) + str(width[1]) + str(width[2]))
     heigth = int(str(heigth[0]) + str(heigth[1]) + str(heigth[2]))
-    print(width,heigth)
+    #print(width,heigth)
     return([width, heigth])
 
 ### Clear Terminal ###

@@ -66,25 +66,36 @@ while(Status):
             UsFunc.ClearScreen()
             ### Resimi Açma###
             PlainImage = UsFunc.FindThePlainImage()
+            imgWidth = int(PlainImage.size[0])
+            imgHeight = int(PlainImage.size[1])
             print("Original Image Size : ", PlainImage.size[0], "x",
                   PlainImage.size[1])  # Get the width and hight of the image for iterating over
-
-            ### Getting Original Size ###
-            OriginalImageSize = UsFunc.HideOriginalImageSize(PlainImage.size[0],PlainImage.size[1])
-
-            ### Hiding Original Size ###
-            Hiding = PlainImage.load()
-            Hiding[0, 0] = (OriginalImageSize[0][0],OriginalImageSize[0][1],OriginalImageSize[0][2])
-            Hiding[0, 1] = (OriginalImageSize[1][0], OriginalImageSize[1][1], OriginalImageSize[1][2])
 
             ### Making Square, If Vertical Make it Horizontal ###
             if PlainImage.size[0] >= PlainImage.size[1]:
                 SquareWidth = PlainImage.size[0]
                 Verticality = False
+
+                ### Setting Original Size ###
+                OriginalImageSize = UsFunc.HideOriginalImageSize(imgWidth,imgHeight,Verticality)
+                
+                ### Hiding Original Size Top Left Corner###
+                Hiding = PlainImage.load()
+                Hiding[0, 0] = (OriginalImageSize[0][0],OriginalImageSize[0][1],OriginalImageSize[0][2])
+                Hiding[0, 1] = (OriginalImageSize[1][0], OriginalImageSize[1][1], OriginalImageSize[1][2])
+            
             else:
                 SquareWidth = PlainImage.size[1]
                 PlainImage = PlainImage.transpose(Image.ROTATE_90)
                 Verticality = True
+
+                ### Setting Original Size ###
+                OriginalImageSize = UsFunc.HideOriginalImageSize(imgWidth,imgHeight,Verticality)
+                
+                ### Hiding Original Size ###
+                Hiding = PlainImage.load()
+                Hiding[0, 0] = (OriginalImageSize[0][0],OriginalImageSize[0][1],OriginalImageSize[0][2])
+                Hiding[0, 1] = (OriginalImageSize[1][0], OriginalImageSize[1][1], OriginalImageSize[1][2])        
 
             ### Getting Image's Pixel RGB Values ###
             PlainImagePixels = list(PlainImage.getdata())
@@ -207,5 +218,5 @@ while(Status):
             img = Image.open('converted/secret.bmp')
             size = UsFunc.GetHiddenSize(img)
             print(size)
-            #img2 = img.crop((0,0,int(size[0]), int(size[1])))
-            #img2.show()
+            img2 = img.crop((0,0,int(size[0]), int(size[1])))
+            img2.show()
