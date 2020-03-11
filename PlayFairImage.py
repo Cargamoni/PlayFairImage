@@ -154,3 +154,49 @@ while(Status):
         if UserInput == '6':
             Status = False
             print('\nAll operations done, exiting program.')
+
+        if UserInput == '7':
+            ### Getting Image's Pixel RGB Values ###
+            PlainImagePixels = list(PlainImage.getdata())
+            ImgOps.CreateSquareImage(SquareWidth, PlainImagePixels, Verticality)
+
+            ### Cipher Image ###
+            SecretImage = UsFunc.FindTheSecretImage()
+            SecretPixelColors = list(SecretImage.getdata())
+            SecretPixelColors = list(UsFunc.Chunks(SecretPixelColors, 2))
+
+            CipherPixelColors = []
+            SecretKey = UsFunc.LoadSecretKeyFile()
+            print(SecretKey, '\n')
+
+            UsFunc.PrintProgressBar(0, len(SecretPixelColors), prefix='Progress:', suffix='Complete', length=50)
+            for i, Secrets in enumerate(SecretPixelColors):
+                SecretRa = Secrets[0][0]
+                SecretGa = Secrets[0][1]
+                SecretBa = Secrets[0][2]
+
+                SecretRb = Secrets[1][0]
+                SecretGb = Secrets[1][1]
+                SecretBb = Secrets[1][2]
+
+                SecretRaIndex = list(zip(*np.where(SecretKey == SecretRa)))[0]
+                SecretRbIndex = list(zip(*np.where(SecretKey == SecretRb)))[0]
+
+                SecretGaIndex = list(zip(*np.where(SecretKey == SecretGa)))[0]
+                SecretGbIndex = list(zip(*np.where(SecretKey == SecretGb)))[0]
+
+                SecretBaIndex = list(zip(*np.where(SecretKey == SecretBa)))[0]
+                SecretBbIndex = list(zip(*np.where(SecretKey == SecretBb)))[0]
+
+                Red = ImgOps.CipherPlainImage(SecretRaIndex, SecretRbIndex, SecretKey)
+                Green = ImgOps.CipherPlainImage(SecretGaIndex, SecretGbIndex, SecretKey)
+                Blue = ImgOps.CipherPlainImage(SecretBaIndex, SecretBbIndex, SecretKey)
+
+                CipherPixelColors.append((Red[0], Green[0], Blue[0]))
+                CipherPixelColors.append((Red[1], Green[1], Blue[1]))
+
+                UsFunc.PrintProgressBar(i + 1, len(SecretPixelColors), prefix='Progress:', suffix='Complete', length=50)
+
+            ImgOps.CreateCipherImage(SquareWidth, CipherPixelColors)
+            print('\nCipher Image Created !\nHeading to Main Menu...\n')
+            time.sleep(5)
