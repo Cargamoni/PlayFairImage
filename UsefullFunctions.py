@@ -37,17 +37,6 @@ def LoadSecretKeyFile():
         print("File not found, creatig file.")
         return CreateSecretKeyFile()
 
-
-### Playfair Secret Image Change
-def WhatWeDo(indexA, indexB, secretKey):
-    if indexA[0] == indexB[0]:  # Aynı Line
-        return (secretKey[indexA[0],(indexA[1]+1)%16], secretKey[indexB[0],(indexB[1]+1)%16])
-    if indexA[1] == indexB[1]:  # Aynı Column
-        return (secretKey[(indexA[0]+1)%16,indexA[1]],secretKey[(indexB[0]+1)%16,indexB[1]])
-    else:                       # Köşegen
-        return (secretKey[indexA[0],indexB[1]],secretKey[indexB[0],indexA[1]])
-
-
 ### Find The PlainImage ###
 def FindThePlainImage():
     try:

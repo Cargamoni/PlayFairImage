@@ -112,9 +112,9 @@ while(Status):
                 SecretBaIndex = list(zip(*np.where(SecretKey == SecretBa)))[0]
                 SecretBbIndex = list(zip(*np.where(SecretKey == SecretBb)))[0]
 
-                Red = UsFunc.WhatWeDo(SecretRaIndex, SecretRbIndex, SecretKey)
-                Green = UsFunc.WhatWeDo(SecretGaIndex, SecretGbIndex, SecretKey)
-                Blue = UsFunc.WhatWeDo(SecretBaIndex, SecretBbIndex, SecretKey)
+                Red = ImgOps.CipherPlainImage(SecretRaIndex, SecretRbIndex, SecretKey)
+                Green = ImgOps.CipherPlainImage(SecretGaIndex, SecretGbIndex, SecretKey)
+                Blue = ImgOps.CipherPlainImage(SecretBaIndex, SecretBbIndex, SecretKey)
 
                 CipherPixelColors.append((Red[0], Green[0], Blue[0]))
                 CipherPixelColors.append((Red[1], Green[1], Blue[1]))
