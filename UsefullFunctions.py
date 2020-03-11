@@ -56,6 +56,56 @@ def FindTheSecretImage():
     except IOError:
         print("File not found, please create secret image.")
 
+### Find The CipherImage ###
+def FindTheCipherImage():
+    try:
+        Path = "imageToSave.bmp"
+        SecretImage = Image.open(Path, mode='r')
+        return SecretImage
+    except IOError:
+        print("File not found, please get the Cipher Image.")
+
+### Hide Original Image Size ###
+def HideOriginalImageSize(width,height):
+    widthStr = len(str(width))
+    heightStr = len(str(height))
+    width = list(str(width))
+    height = list(str(height))
+
+    if widthStr > heightStr:
+        for i in range(widthStr - heightStr):
+            height.insert(0,0)
+    elif heightStr > widthStr:
+        for i in range(heightStr - widthStr):
+            width.insert(0,0)
+
+    for i in range(6- len(width)):
+        width.insert(0,0)
+    for i in range(6- len(height)):
+        height.insert(0,0)
+
+    width = list(Chunks(width, 2))
+    height = list(Chunks(height, 2))
+
+    print(width,height)
+
+    Red = []
+    Green = []
+
+    for i in range(3):
+        red = 0
+        green = 0
+
+        red += int(width[i][0])*10
+        red += int(width[i][1])
+
+        green += int(height[i][0])*10
+        green += int(height[i][0])
+        Red.append(red)
+        Green.append(green)
+
+    return ([Red,Green,[0,0,0]])
+
 ### Clear Terminal ###
 def ClearScreen():
         # for windows

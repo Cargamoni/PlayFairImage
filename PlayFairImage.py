@@ -12,10 +12,8 @@ import SecretShareClient as Client
 Verticality = False
 SquareWidth = 0
 Status = True
+OriginalImageSize = []
 
-'''
-6 - Decipher Image
-'''
 
 while(Status):
     ### Welcome Message ###
@@ -70,6 +68,8 @@ while(Status):
             PlainImage = UsFunc.FindThePlainImage()
             print("Original Image Size : ", PlainImage.size[0], "x",
                   PlainImage.size[1])  # Get the width and hight of the image for iterating over
+
+            OriginalImageSize = UsFunc.HideOriginalImageSize(PlainImage.size[0],PlainImage.size[1])
 
             ### Making Square, If Vertical Make it Horizontal ###
             if PlainImage.size[0] >= PlainImage.size[1]:
@@ -156,21 +156,17 @@ while(Status):
             print('\nAll operations done, exiting program.')
 
         if UserInput == '7':
-            ### Getting Image's Pixel RGB Values ###
-            PlainImagePixels = list(PlainImage.getdata())
-            ImgOps.CreateSquareImage(SquareWidth, PlainImagePixels, Verticality)
-
             ### Cipher Image ###
-            SecretImage = UsFunc.FindTheSecretImage()
-            SecretPixelColors = list(SecretImage.getdata())
-            SecretPixelColors = list(UsFunc.Chunks(SecretPixelColors, 2))
+            CipherImage = UsFunc.FindTheCipherImage()
+            CipherPixelColors = list(CipherImage.getdata())
+            CipherPixelColors = list(UsFunc.Chunks(CipherPixelColors, 2))
 
-            CipherPixelColors = []
+            DeipherPixelColors = []
             SecretKey = UsFunc.LoadSecretKeyFile()
             print(SecretKey, '\n')
 
-            UsFunc.PrintProgressBar(0, len(SecretPixelColors), prefix='Progress:', suffix='Complete', length=50)
-            for i, Secrets in enumerate(SecretPixelColors):
+            UsFunc.PrintProgressBar(0, len(CipherPixelColors), prefix='Progress:', suffix='Complete', length=50)
+            for i, Secrets in enumerate(CipherPixelColors):
                 SecretRa = Secrets[0][0]
                 SecretGa = Secrets[0][1]
                 SecretBa = Secrets[0][2]
@@ -188,15 +184,15 @@ while(Status):
                 SecretBaIndex = list(zip(*np.where(SecretKey == SecretBa)))[0]
                 SecretBbIndex = list(zip(*np.where(SecretKey == SecretBb)))[0]
 
-                Red = ImgOps.CipherPlainImage(SecretRaIndex, SecretRbIndex, SecretKey)
-                Green = ImgOps.CipherPlainImage(SecretGaIndex, SecretGbIndex, SecretKey)
-                Blue = ImgOps.CipherPlainImage(SecretBaIndex, SecretBbIndex, SecretKey)
+                Red = ImgOps.DecipherCipherImage(SecretRaIndex, SecretRbIndex, SecretKey)
+                Green = ImgOps.DecipherCipherImage(SecretGaIndex, SecretGbIndex, SecretKey)
+                Blue = ImgOps.DecipherCipherImage(SecretBaIndex, SecretBbIndex, SecretKey)
 
-                CipherPixelColors.append((Red[0], Green[0], Blue[0]))
-                CipherPixelColors.append((Red[1], Green[1], Blue[1]))
+                DeipherPixelColors.append((Red[0], Green[0], Blue[0]))
+                DeipherPixelColors.append((Red[1], Green[1], Blue[1]))
 
-                UsFunc.PrintProgressBar(i + 1, len(SecretPixelColors), prefix='Progress:', suffix='Complete', length=50)
+                UsFunc.PrintProgressBar(i + 1, len(CipherPixelColors), prefix='Progress:', suffix='Complete', length=50)
 
-            ImgOps.CreateCipherImage(SquareWidth, CipherPixelColors)
-            print('\nCipher Image Created !\nHeading to Main Menu...\n')
+            ImgOps.CreateDecipherImage(CipherImage.size[0], DeipherPixelColors)
+            print('\nDecipher Operation Complate !\nHeading to Main Menu...\n')
             time.sleep(5)

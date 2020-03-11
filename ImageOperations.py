@@ -3,12 +3,12 @@ from PIL import ImageOps
 
 #### Making Square Image ###
 def CreateSquareImage(width, colors, isVertical):
-    img = Image.new('RGB', (width, width), "black")  # Create a new black image
+    img = Image.new('RGB', (width, width), "black") # Paint it black
     pixels = img.load()  # Create the pixel map
     counter = 0
     for i in range(img.size[0]):  # For every pixel:
         for j in range(img.size[1]):
-            # pixels[i, j] = (i, j, 100)  # Set the colour accordingly
+            # Set the colour accordingly
             pixels[i, j] = (colors[counter][0], colors[counter][1], colors[counter][2])
             if counter < len(colors) - 1:
                 counter = counter + 1
@@ -41,6 +41,23 @@ def CreateCipherImage(width, colors):
     img.show()
     img.save('converted/cipher.bmp', format='bmp')
 
+### Cipher Image Creation ###
+def CreateDecipherImage(width, colors):
+    img = Image.new('RGB', (width, width), "black")  # Create a new black image
+    pixels = img.load()  # Create the pixel map
+    counter = 0
+    for i in range(img.size[0]):  # For every pixel:
+        for j in range(img.size[1]):
+            pixels[i, j] = (colors[counter][0], colors[counter][1], colors[counter][2])
+            if counter < len(colors) - 1:
+                counter = counter + 1
+            else:
+                counter = 0
+
+    img = ImageOps.mirror(img)
+    img = img.rotate(90)
+    img.show()
+    img.save('converted/decipheredImage.bmp', format='bmp')
 
 ### Playfair Secret Image Change ###
 def CipherPlainImage(indexA, indexB, secretKey):
@@ -58,4 +75,4 @@ def DecipherCipherImage(indexA, indexB, SecretKey):
     if indexA[1] == indexB[1]:  # Aynı Column
         return (SecretKey[(indexA[0]-1)%16,indexA[1]],SecretKey[(indexB[0]-1)%16,indexB[1]])
     else:                       # Köşegen
-        return (SecretKey[indexB[1],indexA[0]],SecretKey[indexA[1],indexB[0]])
+        return (SecretKey[indexA[0],indexB[1]],SecretKey[indexB[0],indexA[1]])
