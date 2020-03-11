@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageOps
 import numpy as np
 import time
 
@@ -69,7 +69,13 @@ while(Status):
             print("Original Image Size : ", PlainImage.size[0], "x",
                   PlainImage.size[1])  # Get the width and hight of the image for iterating over
 
+            ### Getting Original Size ###
             OriginalImageSize = UsFunc.HideOriginalImageSize(PlainImage.size[0],PlainImage.size[1])
+
+            ### Hiding Original Size ###
+            Hiding = PlainImage.load()
+            Hiding[0, 0] = (OriginalImageSize[0][0],OriginalImageSize[0][1],OriginalImageSize[0][2])
+            Hiding[0, 1] = (OriginalImageSize[1][0], OriginalImageSize[1][1], OriginalImageSize[1][2])
 
             ### Making Square, If Vertical Make it Horizontal ###
             if PlainImage.size[0] >= PlainImage.size[1]:
@@ -196,3 +202,10 @@ while(Status):
             ImgOps.CreateDecipherImage(CipherImage.size[0], DeipherPixelColors)
             print('\nDecipher Operation Complate !\nHeading to Main Menu...\n')
             time.sleep(5)
+
+        if UserInput == '8':
+            img = Image.open('converted/secret.bmp')
+            size = UsFunc.GetHiddenSize(img)
+            print(size)
+            #img2 = img.crop((0,0,int(size[0]), int(size[1])))
+            #img2.show()

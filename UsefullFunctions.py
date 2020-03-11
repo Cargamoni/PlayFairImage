@@ -91,6 +91,7 @@ def HideOriginalImageSize(width,height):
 
     Red = []
     Green = []
+    Blue = [0,0,0]
 
     for i in range(3):
         red = 0
@@ -100,11 +101,21 @@ def HideOriginalImageSize(width,height):
         red += int(width[i][1])
 
         green += int(height[i][0])*10
-        green += int(height[i][0])
+        green += int(height[i][1])
         Red.append(red)
         Green.append(green)
 
-    return ([Red,Green,[0,0,0]])
+    return (list(Red),list(Green),list(Blue))
+
+### Get Hidden Size ###
+def GetHiddenSize(image):
+    pixels = image.load()
+    width = list(pixels[0, 0])
+    heigth = list(pixels[0, 1])
+    width = int(str(width[0]) + str(width[1]) + str(width[2]))
+    heigth = int(str(heigth[0]) + str(heigth[1]) + str(heigth[2]))
+    print(width,heigth)
+    return([width, heigth])
 
 ### Clear Terminal ###
 def ClearScreen():
